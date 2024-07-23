@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,9 @@ public class Biblioteca {
         JFrame frame = new JFrame("Sistema de Biblioteca");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
-        frame.setLayout(new GridLayout(5, 1));
+        frame.setLayout(new GridLayout(3, 2, 10, 10));
+        frame.getContentPane().setBackground(Color.LIGHT_GRAY);
+        ((JPanel) frame.getContentPane()).setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JButton cadastroObrasButton = new JButton("Cadastro de Obras");
         cadastroObrasButton.addActionListener(e -> openCadastroObrasWindow());
@@ -36,22 +40,32 @@ public class Biblioteca {
 
         JButton consultaEmprestimoButton = new JButton("Consulta de Empréstimos");
         consultaEmprestimoButton.addActionListener(e -> openConsultaEmprestimoWindow());
-        
-        frame.getContentPane().add(cadastroObrasButton);
-        frame.getContentPane().add(consultaObrasButton);
-        frame.getContentPane().add(cadastroUsuariosButton);
-        frame.getContentPane().add(consultaUsuariosButton);
-        frame.getContentPane().add(emprestimoButton);
-        frame.getContentPane().add(consultaEmprestimoButton);
+
+        addStyledButton(frame, cadastroObrasButton);
+        addStyledButton(frame, consultaObrasButton);
+        addStyledButton(frame, cadastroUsuariosButton);
+        addStyledButton(frame, consultaUsuariosButton);
+        addStyledButton(frame, emprestimoButton);
+        addStyledButton(frame, consultaEmprestimoButton);
 
         frame.setVisible(true);
     }
 
+    private static void addStyledButton(JFrame frame, JButton button) {
+        button.setFocusPainted(false);
+        button.setBackground(new Color(0x2E8B57));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        frame.getContentPane().add(button);
+    }
+
     private static void openCadastroObrasWindow() {
-        JFrame frame = new JFrame("Cadastro de Obras");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setLayout(new GridLayout(6, 2));
+        JFrame frame = createStandardFrame("Cadastro de Obras");
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 2, 5, 5));
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JTextField tituloField = new JTextField();
         JTextField autorField = new JTextField();
@@ -59,16 +73,12 @@ public class Biblioteca {
         JTextField tipoField = new JTextField();
         JButton cadastrarButton = new JButton("Cadastrar");
 
-        frame.add(new JLabel("Título:"));
-        frame.add(tituloField);
-        frame.add(new JLabel("Autor:"));
-        frame.add(autorField);
-        frame.add(new JLabel("Ano de Publicação:"));
-        frame.add(anoField);
-        frame.add(new JLabel("Tipo de Obra:"));
-        frame.add(tipoField);
-        frame.add(new JLabel());
-        frame.add(cadastrarButton);
+        addLabeledField(panel, "Título:", tituloField);
+        addLabeledField(panel, "Autor:", autorField);
+        addLabeledField(panel, "Ano de Publicação:", anoField);
+        addLabeledField(panel, "Tipo de Obra:", tipoField);
+        panel.add(new JLabel());
+        panel.add(cadastrarButton);
 
         cadastrarButton.addActionListener(e -> {
             String titulo = tituloField.getText();
@@ -84,23 +94,25 @@ public class Biblioteca {
             tipoField.setText("");
         });
 
+        frame.add(panel);
         frame.setVisible(true);
     }
 
     private static void openConsultaObrasWindow() {
-        JFrame frame = new JFrame("Consulta de Títulos Disponíveis");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setLayout(new BorderLayout());
+        JFrame frame = createStandardFrame("Consulta de Títulos Disponíveis");
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout(5, 5));
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JTextField consultaTituloField = new JTextField();
         JButton consultarButton = new JButton("Buscar");
         JList<Livro> listaObras = new JList<>();
         JScrollPane scrollPane = new JScrollPane(listaObras);
 
-        frame.add(consultaTituloField, BorderLayout.NORTH);
-        frame.add(scrollPane, BorderLayout.CENTER);
-        frame.add(consultarButton, BorderLayout.SOUTH);
+        panel.add(consultaTituloField, BorderLayout.NORTH);
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(consultarButton, BorderLayout.SOUTH);
 
         consultarButton.addActionListener(e -> {
             String consultaTitulo = consultaTituloField.getText().toLowerCase();
@@ -115,14 +127,16 @@ public class Biblioteca {
             listaObras.setModel(model);
         });
 
+        frame.add(panel);
         frame.setVisible(true);
     }
 
     private static void openCadastroUsuariosWindow() {
-        JFrame frame = new JFrame("Cadastro de Usuários");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setLayout(new GridLayout(6, 2));
+        JFrame frame = createStandardFrame("Cadastro de Usuários");
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 2, 5, 5));
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JTextField nomeField = new JTextField();
         JTextField cpfField = new JTextField();
@@ -130,16 +144,12 @@ public class Biblioteca {
         JTextField contatoField = new JTextField();
         JButton cadastrarButton = new JButton("Cadastrar");
 
-        frame.add(new JLabel("Nome:"));
-        frame.add(nomeField);
-        frame.add(new JLabel("CPF:"));
-        frame.add(cpfField);
-        frame.add(new JLabel("Curso:"));
-        frame.add(cursoField);
-        frame.add(new JLabel("Contato:"));
-        frame.add(contatoField);
-        frame.add(new JLabel());
-        frame.add(cadastrarButton);
+        addLabeledField(panel, "Nome:", nomeField);
+        addLabeledField(panel, "CPF:", cpfField);
+        addLabeledField(panel, "Curso:", cursoField);
+        addLabeledField(panel, "Contato:", contatoField);
+        panel.add(new JLabel());
+        panel.add(cadastrarButton);
 
         cadastrarButton.addActionListener(e -> {
             String nome = nomeField.getText();
@@ -155,23 +165,25 @@ public class Biblioteca {
             contatoField.setText("");
         });
 
+        frame.add(panel);
         frame.setVisible(true);
     }
 
     private static void openConsultaUsuariosWindow() {
-        JFrame frame = new JFrame("Consulta de Usuários Disponíveis");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setLayout(new BorderLayout());
+        JFrame frame = createStandardFrame("Consulta de Usuários Disponíveis");
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout(5, 5));
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JTextField consultaNomeField = new JTextField();
         JButton consultarButton = new JButton("Buscar");
         JList<Usuario> listaUsuarios = new JList<>();
         JScrollPane scrollPane = new JScrollPane(listaUsuarios);
 
-        frame.add(consultaNomeField, BorderLayout.NORTH);
-        frame.add(scrollPane, BorderLayout.CENTER);
-        frame.add(consultarButton, BorderLayout.SOUTH);
+        panel.add(consultaNomeField, BorderLayout.NORTH);
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(consultarButton, BorderLayout.SOUTH);
 
         consultarButton.addActionListener(e -> {
             String consultaNome = consultaNomeField.getText().toLowerCase();
@@ -186,14 +198,16 @@ public class Biblioteca {
             listaUsuarios.setModel(model);
         });
 
+        frame.add(panel);
         frame.setVisible(true);
     }
 
     private static void openEmprestimoWindow() {
-        JFrame frame = new JFrame("Realizar Empréstimos");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setLayout(new GridLayout(5, 2));
+        JFrame frame = createStandardFrame("Realizar Empréstimos");
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 2, 5, 5));
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JTextField emprestimoTituloField = new JTextField();
         JTextField emprestimoUsuarioField = new JTextField();
@@ -201,15 +215,12 @@ public class Biblioteca {
         JTextField dataDevolucaoField = new JTextField();
         JButton emprestarButton = new JButton("Emprestar");
 
-        frame.add(new JLabel("Título da Obra:"));
-        frame.add(emprestimoTituloField);
-        frame.add(new JLabel("CPF do Usuário:"));
-        frame.add(emprestimoUsuarioField);
-        frame.add(new JLabel("Data de Empréstimo:"));
-        frame.add(dataEmprestimoField);
-        frame.add(new JLabel("Data de Devolução:"));
-        frame.add(dataDevolucaoField);
-        frame.add(emprestarButton);
+        addLabeledField(panel, "Título da Obra:", emprestimoTituloField);
+        addLabeledField(panel, "CPF do Usuário:", emprestimoUsuarioField);
+        addLabeledField(panel, "Data de Empréstimo:", dataEmprestimoField);
+        addLabeledField(panel, "Data de Devolução:", dataDevolucaoField);
+        panel.add(new JLabel());
+        panel.add(emprestarButton);
 
         emprestarButton.addActionListener(e -> {
             String titulo = emprestimoTituloField.getText();
@@ -228,23 +239,25 @@ public class Biblioteca {
             }
         });
 
+        frame.add(panel);
         frame.setVisible(true);
     }
 
     private static void openConsultaEmprestimoWindow() {
-        JFrame frame = new JFrame("Consulta de emprestimos");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setLayout(new BorderLayout());
+        JFrame frame = createStandardFrame("Consulta de Empréstimos");
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout(5, 5));
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JTextField consultaNomeField = new JTextField();
         JButton consultarButton = new JButton("Buscar");
         JList<Emprestimo> listaEmprestimo = new JList<>();
         JScrollPane scrollPane = new JScrollPane(listaEmprestimo);
 
-        frame.add(consultaNomeField, BorderLayout.NORTH);
-        frame.add(scrollPane, BorderLayout.CENTER);
-        frame.add(consultarButton, BorderLayout.SOUTH);
+        panel.add(consultaNomeField, BorderLayout.NORTH);
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(consultarButton, BorderLayout.SOUTH);
 
         consultarButton.addActionListener(e -> {
             String consultaNome = consultaNomeField.getText().toLowerCase();
@@ -259,7 +272,20 @@ public class Biblioteca {
             listaEmprestimo.setModel(model);
         });
 
+        frame.add(panel);
         frame.setVisible(true);
     }
 
-}   
+    private static JFrame createStandardFrame(String title) {
+        JFrame frame = new JFrame(title);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.getContentPane().setBackground(Color.WHITE);
+        return frame;
+    }
+
+    private static void addLabeledField(JPanel panel, String labelText, JTextField textField) {
+        panel.add(new JLabel(labelText));
+        panel.add(textField);
+    }
+}
